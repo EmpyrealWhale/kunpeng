@@ -1,12 +1,12 @@
 {
   "notice": {
-    "id": "notice_2026_spring_update",
+    "id": "notice_2026_spring_update_v2",
     "type": "UPDATE",
     "title": "New Update Available (v0.9.1)!",
     "message": "We have added offline stroke animations, improved radical search, and fixed memory issues.",
     "actionLabel": "Download",
     "actionUrl": "https://github.com/EmpyrealWhale/kunpeng/releases",
-    "minAppVersionCode": 1001,
+    "minAppVersionCode": 0,
     "dismissible": true,
     "showNotification": true,
     "style": {
