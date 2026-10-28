@@ -1,0 +1,27 @@
+{
+  "notice": {
+    "id": "notice_2026_spring_update",
+    "type": "UPDATE",
+    "title": "New Update Available (v0.9.1)!",
+    "message": "We have added offline stroke animations, improved radical search, and fixed memory issues.",
+    "actionLabel": "Download",
+    "actionUrl": "https://github.com/EmpyrealWhale/kunpeng/releases",
+    "minAppVersionCode": 1001,
+    "dismissible": true,
+    "showNotification": true,
+    "style": {
+      "backgroundColor": "#1E1E2E",
+      "borderColor": "#CBA6F7",
+      "borderWidthDp": 1.5,
+      "cornerRadiusDp": 20,
+      "titleColor": "#CDD6F4",
+      "messageColor": "#BAC2DE",
+      "icon": "star",
+      "iconColor": "#F9E2AF",
+      "badgeText": "NEW",
+      "badgeColor": "#F38BA8",
+      "actionButtonColor": "#CBA6F7",
+      "actionTextColor": "#11111B"
+    }
+  }
+}
