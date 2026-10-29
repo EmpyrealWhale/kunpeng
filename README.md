@@ -1,112 +1,97 @@
 <div align="center">
+  <a href="https://empyrealwhale.github.io/kunpeng/">
+    <img src="assets/kunpeng_logo.webp" alt="KunPeng logo" width="104" />
+  </a>
 
-  <img src="assets/kunpeng_logo.webp" alt="KunPeng Logo" width="120" height="120" style="border-radius: 28px;" />
+  # KunPeng · 鲲鹏
 
-  # KunPeng • 鲲鹏
-  
-  **A fast, modern, offline-first Chinese-English dictionary for Android.**
+  **Free Chinese–English dictionary with study tools.**
 
-  [![Latest Release](https://img.shields.io/github/v/release/EmpyrealWhale/kunpeng?label=Latest%20Release&color=38bdf8&style=flat-square)](https://github.com/EmpyrealWhale/kunpeng/releases/latest)
-  [![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-22c55e?style=flat-square)](https://github.com/EmpyrealWhale/kunpeng/releases/latest)
-  [![Status](https://img.shields.io/badge/Status-Beta%20v0.9.1-f59e0b?style=flat-square)](https://github.com/EmpyrealWhale/kunpeng/releases/latest)
-  [![Website](https://img.shields.io/badge/Web-GitHub%20Pages-6366f1?style=flat-square)](https://empyrealwhale.github.io/kunpeng/)
+  A free Chinese–English dictionary and study companion for Android.
 
-  <p align="center">
-    <a href="https://github.com/EmpyrealWhale/kunpeng/releases/latest"><b>Download APK</b></a> •
-    <a href="#-screenshots">Screenshots</a> •
-    <a href="#-features">Features</a> •
-    <a href="#-installation">Installation</a> •
-    <a href="#-bug-reports--feedback">Feedback</a> •
-    <a href="#-credits--attributions">Credits</a>
-  </p>
+  [**Download for Android**](https://github.com/EmpyrealWhale/kunpeng/releases/latest) · [**Visit the website**](https://empyrealwhale.github.io/kunpeng/) · [**Send feedback**](mailto:empyrealwhale@gmail.com?subject=Feedback%20for%20KunPeng%20Dictionary)
 
+  ![Free to use](https://img.shields.io/badge/Free-to%20use-202020?style=flat-square&labelColor=121212)
+  ![Offline dictionary](https://img.shields.io/badge/Dictionary-works%20offline-202020?style=flat-square&labelColor=121212)
 </div>
 
 ---
 
-## ⚡ Overview
+## Overview
 
-**KunPeng (鲲鹏)** is designed for learners and linguists who need a responsive, beautiful, and completely offline Chinese dictionary. Powered by Jetpack Compose and high-performance on-device recognition, it offers instantaneous lookups, stroke-order animations, and radical breakdowns with zero latency and zero tracking.
+KunPeng includes dictionary search, character breakdowns, writing practice, and vocabulary review in one free Android app.
 
----
+Search in **Chinese, pinyin, or English**; follow the components of an unfamiliar character; then save what you've learned to a list or a flashcard session. Dictionary search works offline.
 
-## 📸 Screenshots
+## What you can do
 
-<div align="center">
-  <table>
-    <tr>
-      <td align="center"><b>Dictionary & Search</b></td>
-      <td align="center"><b>Stroke Order & Writing</b></td>
-      <td align="center"><b>Tactile Flashcards</b></td>
-      <td align="center"><b>Word Lists & Zen Study</b></td>
-    </tr>
-    <tr>
-      <td align="center">
-        <img src="assets/screenshots/screenshot_search.webp" width="200" alt="Search & Dictionary" onerror="this.onerror=null; this.src='https://placehold.co/400x850/1e1e1e/e0e0e0?text=Search+Screen';" />
-      </td>
-      <td align="center">
-        <img src="assets/screenshots/screenshot_practice.webp" width="200" alt="Calligraphy & Stroke Order" onerror="this.onerror=null; this.src='https://placehold.co/400x850/1e1e1e/e0e0e0?text=Practice+Writing';" />
-      </td>
-      <td align="center">
-        <img src="assets/screenshots/screenshot_flashcards.webp" width="200" alt="Flashcards Review" onerror="this.onerror=null; this.src='https://placehold.co/400x850/1e1e1e/e0e0e0?text=Flashcards+Deck';" />
-      </td>
-      <td align="center">
-        <img src="assets/screenshots/screenshot_lists.webp" width="200" alt="Word Lists & Categories" onerror="this.onerror=null; this.src='https://placehold.co/400x850/1e1e1e/e0e0e0?text=Word+Lists';" />
-      </td>
-    </tr>
-  </table>
-</div>
+| | Feature | Why it helps |
+| :-- | :-- | :-- |
+| 🔎 | **Search without a connection** | Look up Chinese characters, pinyin, and English meanings using the local CC-CEDICT dictionary. |
+| ✍️ | **Write to search** | Draw a character and choose from on-device handwriting recognition suggestions. The recognition model needs an initial setup/download. |
+| 🖌️ | **See stroke order** | Watch stroke animations for most supported characters and use the writing practice tools to work through the strokes yourself. |
+| 🧩 | **Use memory help** | Break characters into components and explore related words, look-alikes, and other connections that make them easier to remember. |
+| 🎴 | **Review with flashcards** | Study saved words, swipe through a deck, retry difficult cards, and pick up where you left off. |
+| 📚 | **Build word lists** | Bookmark entries, use built-in study lists, create your own collections, and import or export lists. |
+| 🎵 | **Read the tones your way** | Choose colored pinyin or compact tone bars; hear pronunciations with adjustable speech speed. |
+| 🏠 | **Keep a word on your home screen** | The Android widget shows a word and its meaning, with controls to hear it or see another word. |
+| 🀄 | **Explore radicals and characters** | Browse Kangxi radicals, inspect character structure, and switch between simplified and traditional forms. |
+| ☀️ | **Make it comfortable** | Choose light, dark, or system theme and adjust reading size. |
 
----
+### A simple study routine
 
-## ✨ Features
+1. **Look it up.** Enter a word, type pinyin, search in English, or write the character by hand.
+2. **Understand it.** Read definitions and examples where available, check the stroke order, and open memory help for character connections.
+3. **Come back to it.** Bookmark the entry or add it to a list, then review your lists with flashcards or practice writing.
 
-- **📖 100% Offline Database**: Complete CC-CEDICT database with over 120,000+ entries, pinyin annotations, and multi-definition search.
-- **✍️ Digital Ink Recognition**: Real-time on-device handwriting input engine — recognize handwritten Hanzi and stroke sequences instantly without an internet connection.
-- **🎨 Stroke Order Animations**: Vector-based dynamic stroke order animations and radical component analysis powered by *Make Me a Hanzi*.
-- **🔍 Radical & Component Decomposition**: Explore characters hierarchically by stroke counts, radicals, and similar glyph groupings.
-- **🔊 Multi-Speed Audio Pronunciation**: Built-in Text-To-Speech with adjustable playback speeds and custom tone indicator preferences.
-- **🎴 Spaced & Tactile Flashcards**: 3D tactile card deck with smooth gesture swiping and dual tap controls.
-- **🌗 Material You & Zen Theming**: Adaptive light and dark themes designed with modern, calming Zen aesthetics.
+You can also browse the daily word in the app or use the home-screen widget.
 
----
+## Website screenshots
 
-## 📥 Installation
+The website supports separate screenshots for dark and light themes. Replace the included placeholder WebP images with your own portrait screenshots:
 
-1. Navigate to the **[Releases Page](https://github.com/EmpyrealWhale/kunpeng/releases/latest)**.
-2. Download the APK suited for your device:
-   - `KunPeng-arm64-v8a.apk` (Recommended for modern Android phones and tablets)
-   - `KunPeng-armeabi-v7a.apk` (For older 32-bit Android devices)
-   - `KunPeng-universal.apk` (Compatible with all devices)
-3. Open the downloaded `.apk` file on your device and tap **Install** (allow *Install from Unknown Sources* if prompted).
+| Dark theme | Light theme |
+| --- | --- |
+| `assets/screenshots/dark/01.webp` | `assets/screenshots/light/01.webp` |
+| `assets/screenshots/dark/02.webp` | `assets/screenshots/light/02.webp` |
+| `assets/screenshots/dark/03.webp` | `assets/screenshots/light/03.webp` |
 
-> **System Requirements**: Android 8.0 (API Level 26) or newer.
+The website selects the matching set when you switch themes (dark is the default). The images appear in a fixed, non-interactive card fan. To reorder the cards, rename each dark/light pair together. Keep an approximately **9:19.5** portrait aspect ratio. Missing images fall back to simple icons, not simulated app screens.
 
----
+## Download and install
 
-## 🛠️ Remote Announcements & Updates
+KunPeng is available as an Android APK.
 
-This repository acts as the official update and announcement feed for the KunPeng app via [`app_config.json`](app_config.json). When connected to Wi-Fi, the app securely verifies this repository for version updates, maintenance notices, and dictionary announcements.
+1. Open the [latest GitHub release](https://github.com/EmpyrealWhale/kunpeng/releases/latest).
+2. Download the APK that matches your device (or the universal APK, if provided).
+3. Open the APK on your Android device and follow the installation prompts. Android may ask you to allow installation from this source.
 
----
+Dictionary search works offline after installation. Handwriting recognition may require a one-time model download; announcements and release links require internet access.
 
-## 🐛 Bug Reports & Feedback
+## A few things worth knowing
 
-If you encounter any issues, missing definitions, or want to suggest new features, please submit an issue on our [Issue Tracker](https://github.com/EmpyrealWhale/kunpeng/issues).
+**Is it free?** Yes. KunPeng is free to download and use. See the usage terms below for distribution restrictions.
 
----
+**Does everything work offline?** Dictionary searches, saved study material, and installed handwriting recognition run on your device. Downloading the handwriting model for the first time, checking announcements, and visiting release links require a connection.
 
-## 📜 License & Terms of Use
+**Does it support traditional Chinese?** Yes. You can enable traditional characters in Settings.
+
+**Can I move my word lists?** You can import lists and export custom lists as text files from the app.
+
+## Feedback
+
+Found an incorrect definition, a bug, or have a suggestion? [Email the developer](mailto:empyrealwhale@gmail.com?subject=Feedback%20for%20KunPeng%20Dictionary). Describe what happened and include a screenshot if it helps.
+
+## Data, acknowledgments, and usage
+
+KunPeng draws on the work behind [CC-CEDICT](https://cc-cedict.org/) for Chinese–English entries and [Make Me a Hanzi](https://github.com/skishore/makemeahanzi) for character and stroke data. Handwriting recognition uses Google's [ML Kit Digital Ink Recognition](https://developers.google.com/ml-kit/vision/digital-ink-recognition). Thanks to the contributors who make these resources available.
 
 Copyright © 2026 **EmpyrealWhale**. All rights reserved.
 
-KunPeng is free to download, install, and use for personal, educational, and non-commercial purposes. Redistribution, modification, or repackaging of the APK binary without prior permission is strictly prohibited.
+KunPeng is free for personal, educational, and non-commercial use. This repository's availability does **not** grant permission to redistribute, modify, or repackage the APK. The underlying datasets and third-party components have their own licenses and attribution requirements.
 
 ---
 
-## 🙏 Credits & Attributions
-
-KunPeng is built upon exceptional open-source databases and research:
-
-- **[CC-CEDICT](https://cc-cedict.org/)**: The comprehensive community-driven Chinese-English dictionary dataset.
-- **[Make Me a Hanzi](https://github.com/skishore/makemeahanzi)**: Open stroke order vector data and radical decompositions.
+<div align="center">
+  <sub>KunPeng · Chinese–English dictionary</sub>
+</div>

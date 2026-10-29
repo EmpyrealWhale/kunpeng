@@ -1,27 +1,19 @@
 {
   "notice": {
-    "id": "notice_2026_spring_update_v2",
-    "type": "UPDATE",
-    "title": "New Update Available (v0.9.1)!",
-    "message": "We have added offline stroke animations, improved radical search, and fixed memory issues.",
-    "actionLabel": "Download",
-    "actionUrl": "https://github.com/EmpyrealWhale/kunpeng/releases",
+    "id": "notice_beta_launch_2026_10",
+    "type": "NEWS",
+    "title": "KunPeng beta launched",
+    "message": "Feedback is welcome.",
+    "actionLabel": "Download beta",
+    "actionUrl": "https://github.com/EmpyrealWhale/kunpeng/releases/latest",
     "minAppVersionCode": 0,
     "dismissible": true,
     "showNotification": true,
     "style": {
-      "backgroundColor": "#1E1E2E",
-      "borderColor": "#CBA6F7",
-      "borderWidthDp": 1.5,
-      "cornerRadiusDp": 20,
-      "titleColor": "#CDD6F4",
-      "messageColor": "#BAC2DE",
-      "icon": "star",
-      "iconColor": "#F9E2AF",
-      "badgeText": "NEW",
-      "badgeColor": "#F38BA8",
-      "actionButtonColor": "#CBA6F7",
-      "actionTextColor": "#11111B"
+      "icon": "confetti",
+      "iconColor": "#FFFFFF",
+      "badgeText": "BETA",
+      "badgeColor": "#BBBBBB"
     }
   }
 }
