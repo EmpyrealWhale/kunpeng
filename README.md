@@ -8,11 +8,12 @@
 
   [![Latest Release](https://img.shields.io/github/v/release/EmpyrealWhale/kunpeng?label=Latest%20Release&color=38bdf8&style=flat-square)](https://github.com/EmpyrealWhale/kunpeng/releases/latest)
   [![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-22c55e?style=flat-square)](https://github.com/EmpyrealWhale/kunpeng/releases/latest)
-  [![Status](https://img.shields.io/badge/Status-Beta%20v0.9.0-f59e0b?style=flat-square)](https://github.com/EmpyrealWhale/kunpeng/releases/latest)
+  [![Status](https://img.shields.io/badge/Status-Beta%20v0.9.1-f59e0b?style=flat-square)](https://github.com/EmpyrealWhale/kunpeng/releases/latest)
   [![Website](https://img.shields.io/badge/Web-GitHub%20Pages-6366f1?style=flat-square)](https://empyrealwhale.github.io/kunpeng/)
 
   <p align="center">
     <a href="https://github.com/EmpyrealWhale/kunpeng/releases/latest"><b>Download APK</b></a> •
+    <a href="#-screenshots">Screenshots</a> •
     <a href="#-features">Features</a> •
     <a href="#-installation">Installation</a> •
     <a href="#-bug-reports--feedback">Feedback</a> •
@@ -25,18 +26,48 @@
 
 ## ⚡ Overview
 
-**KunPeng (鲲鹏)** is designed for learners and linguists who need a responsive, beautiful, and completely offline Chinese dictionary. Powered by Jetpack Compose and modern ML on-device models, it offers instantaneous lookups, stroke-order animations, and radical breakdowns with zero latency and zero tracking.
+**KunPeng (鲲鹏)** is designed for learners and linguists who need a responsive, beautiful, and completely offline Chinese dictionary. Powered by Jetpack Compose and high-performance on-device recognition, it offers instantaneous lookups, stroke-order animations, and radical breakdowns with zero latency and zero tracking.
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Dictionary & Search</b></td>
+      <td align="center"><b>Stroke Order & Writing</b></td>
+      <td align="center"><b>Tactile Flashcards</b></td>
+      <td align="center"><b>Word Lists & Zen Study</b></td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="assets/screenshots/screenshot_search.webp" width="200" alt="Search & Dictionary" onerror="this.onerror=null; this.src='https://placehold.co/400x850/1e1e1e/e0e0e0?text=Search+Screen';" />
+      </td>
+      <td align="center">
+        <img src="assets/screenshots/screenshot_practice.webp" width="200" alt="Calligraphy & Stroke Order" onerror="this.onerror=null; this.src='https://placehold.co/400x850/1e1e1e/e0e0e0?text=Practice+Writing';" />
+      </td>
+      <td align="center">
+        <img src="assets/screenshots/screenshot_flashcards.webp" width="200" alt="Flashcards Review" onerror="this.onerror=null; this.src='https://placehold.co/400x850/1e1e1e/e0e0e0?text=Flashcards+Deck';" />
+      </td>
+      <td align="center">
+        <img src="assets/screenshots/screenshot_lists.webp" width="200" alt="Word Lists & Categories" onerror="this.onerror=null; this.src='https://placehold.co/400x850/1e1e1e/e0e0e0?text=Word+Lists';" />
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
 ## ✨ Features
 
 - **📖 100% Offline Database**: Complete CC-CEDICT database with over 120,000+ entries, pinyin annotations, and multi-definition search.
-- **✍️ Digital Ink Recognition**: On-device handwriting input engine powered by Google ML Kit — recognize handwritten Hanzi instantly without internet.
+- **✍️ Digital Ink Recognition**: Real-time on-device handwriting input engine — recognize handwritten Hanzi and stroke sequences instantly without an internet connection.
 - **🎨 Stroke Order Animations**: Vector-based dynamic stroke order animations and radical component analysis powered by *Make Me a Hanzi*.
 - **🔍 Radical & Component Decomposition**: Explore characters hierarchically by stroke counts, radicals, and similar glyph groupings.
 - **🔊 Multi-Speed Audio Pronunciation**: Built-in Text-To-Speech with adjustable playback speeds and custom tone indicator preferences.
-- **🌗 Material You & Dynamic Theming**: Adaptive light and dark themes designed with modern Material 3 aesthetics.
+- **🎴 Spaced & Tactile Flashcards**: 3D tactile card deck with smooth gesture swiping and dual tap controls.
+- **🌗 Material You & Zen Theming**: Adaptive light and dark themes designed with modern, calming Zen aesthetics.
 
 ---
 
@@ -79,4 +110,3 @@ KunPeng is built upon exceptional open-source databases and research:
 
 - **[CC-CEDICT](https://cc-cedict.org/)**: The comprehensive community-driven Chinese-English dictionary dataset.
 - **[Make Me a Hanzi](https://github.com/skishore/makemeahanzi)**: Open stroke order vector data and radical decompositions.
-- **[Google ML Kit](https://developers.google.com/ml-kit/vision/digital-ink-recognition)**: On-device Digital Ink Recognition engine.

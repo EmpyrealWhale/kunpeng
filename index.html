@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KunPeng • 鲲鹏 — Modern Offline Chinese Dictionary for Android</title>
+  <meta name="description" content="Fast, serene, 100% offline-first Chinese-English dictionary with stroke animations, radical decomposition, and on-device digital ink recognition.">
+  <link rel="icon" type="image/webp" href="assets/kunpeng_logo.webp">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #121212;
+      --surface-lowest: #0a0a0a;
+      --surface-low: #1a1a1a;
+      --surface: #1e1e1e;
+      --surface-high: #2a2a2a;
+      --surface-highest: #363636;
+      --surface-variant: #2c2c2c;
+      --on-surface: #e0e0e0;
+      --on-surface-variant: #9e9e9e;
+      --primary: #ffffff;
+      --on-primary: #000000;
+      --primary-container: #444444;
+      --outline: #888888;
+      --outline-variant: rgba(255, 255, 255, 0.12);
+      --accent-purple: #cba6f7;
+      --accent-rose: #f38ba8;
+      --accent-gold: #f9e2af;
+      --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      cursor: none; /* Controlled by custom magnetic cursor */
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      * { cursor: auto !important; }
+      .custom-cursor, .custom-cursor-follower { display: none !important; }
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--on-surface);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* ─── Ambient Idle Background Layer ────────────────────────────────────────── */
+    .ambient-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.18;
+      pointer-events: none;
+      animation: floatOrb 22s infinite alternate ease-in-out;
+    }
+    .ambient-orb-1 {
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+      top: -10%;
+      left: 20%;
+      animation-duration: 18s;
+    }
+    .ambient-orb-2 {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #cba6f7 0%, transparent 70%);
+      top: 40%;
+      right: -10%;
+      animation-duration: 26s;
+    }
+    .ambient-orb-3 {
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, #38bdf8 0%, transparent 70%);
+      bottom: -10%;
+      left: 10%;
+      animation-duration: 20s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.1); }
+      100% { transform: translate(-40px, -60px) scale(0.95); }
+    }
+
+    /* Floating Calligraphy Glyphs in the Background */
+    .floating-glyphs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      user-select: none;
+    }
+    .floating-glyph {
+      position: absolute;
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.035);
+      animation: driftGlyph 28s infinite ease-in-out;
+      transition: color 0.5s ease;
+    }
+    .glyph-1 { font-size: 16rem; top: 12%; left: -4%; animation-duration: 32s; }
+    .glyph-2 { font-size: 20rem; top: 38%; right: -6%; animation-duration: 36s; animation-delay: -6s; }
+    .glyph-3 { font-size: 14rem; bottom: 8%; left: 8%; animation-duration: 28s; animation-delay: -12s; }
+    .glyph-4 { font-size: 18rem; top: 68%; right: 18%; animation-duration: 34s; animation-delay: -18s; }
+
+    @keyframes driftGlyph {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.03; }
+      50% { transform: translateY(-30px) rotate(4deg); opacity: 0.06; }
+    }
+
+    /* ─── Custom Magnetic Cursor ──────────────────────────────────────────────── */
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background-color 0.2s, opacity 0.2s;
+    }
+    .custom-cursor-follower {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s var(--ease-smooth), height 0.25s var(--ease-smooth), border-color 0.25s, transform 0.05s ease-out;
+    }
+    .custom-cursor.active {
+      width: 12px;
+      height: 12px;
+      background-color: var(--accent-purple);
+    }
+    .custom-cursor-follower.active {
+      width: 58px;
+      height: 58px;
+      border-color: var(--accent-purple);
+      background: rgba(203, 166, 247, 0.08);
+    }
+
+    /* ─── Top Announcement Bar (app_config.json) ──────────────────────────────── */
+    .announcement-wrapper {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 10px 16px;
+      background: rgba(18, 18, 18, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--outline-variant);
+      transition: transform 0.4s var(--ease-smooth), opacity 0.4s;
+    }
+    .announcement-wrapper.hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .announcement-bar {
+      max-width: 980px;
+      margin: 0 auto;
+      background: #1e1e2e;
+      border: 1.5px solid #cba6f7;
+      border-radius: 20px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 10px 25px -5px rgba(203, 166, 247, 0.25);
+      animation: pulseBorder 4s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulseBorder {
+      0% { box-shadow: 0 8px 20px -5px rgba(203, 166, 247, 0.2); }
+      100% { box-shadow: 0 14px 30px -4px rgba(203, 166, 247, 0.4); }
+    }
+
+    .announcement-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .announcement-badge {
+      background: #f38ba8;
+      color: #11111b;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      animation: badgePulse 2s infinite ease-in-out;
+    }
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    .announcement-star {
+      color: #f9e2af;
+      font-size: 1.1rem;
+      animation: spinSlow 12s infinite linear;
+    }
+    @keyframes spinSlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .announcement-content {
+      font-size: 0.88rem;
+      color: #bac2de;
+    }
+    .announcement-title {
+      color: #cdd6f4;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+    .announcement-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .announcement-btn {
+      background: #cba6f7;
+      color: #11111b;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 6px 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+    }
+    .announcement-btn:hover {
+      background: #d8baff;
+      box-shadow: 0 4px 14px rgba(203, 166, 247, 0.5);
+    }
+    .announcement-close {
+      background: transparent;
+      border: none;
+      color: #9e9e9e;
+      font-size: 1.1rem;
+      padding: 4px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .announcement-close:hover {
+      color: #ffffff;
+      transform: scale(1.15);
+    }
+
+    /* ─── Main Container & Page Flow ─────────────────────────────────────────── */
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ─── Hero Section ───────────────────────────────────────────────────────── */
+    .hero-section {
+      text-align: center;
+      padding: 30px 10px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-logo-box {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .hero-logo {
+      width: 114px;
+      height: 114px;
+      border-radius: 28px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 255, 255, 0.08);
+      position: relative;
+      z-index: 2;
+      animation: floatLogo 5s infinite ease-in-out;
+      transition: transform 0.3s;
+    }
+    .hero-logo-halo {
+      position: absolute;
+      inset: -12px;
+      border-radius: 36px;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: radial-gradient(circle, rgba(203, 166, 247, 0.15) 0%, transparent 70%);
+      z-index: 1;
+      animation: pulseHalo 4s infinite alternate ease-in-out;
+    }
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes pulseHalo {
+      0% { transform: scale(0.96); opacity: 0.5; }
+      100% { transform: scale(1.06); opacity: 0.9; }
+    }
+
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3.4rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, #ffffff 30%, #cba6f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--surface-low);
+      border: 1px solid var(--outline-variant);
+      border-radius: 30px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      margin-bottom: 20px;
+    }
+    .tagline-dot {
+      width: 7px;
+      height: 7px;
+      background: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #22c55e;
+      animation: blink 2s infinite ease-in-out;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .hero-description {
+      max-width: 660px;
+      font-size: 1.15rem;
+      color: var(--on-surface-variant);
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    /* ─── Hero Magnetic Buttons ──────────────────────────────────────────────── */
+    .hero-cta-cluster {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    /* Button Magnet Target */
+    .btn-magnet {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 36px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: transform 0.15s ease-out, box-shadow 0.25s ease;
+      will-change: transform;
+    }
+
+    .btn-primary {
+      background: #ffffff;
+      color: #121212;
+      box-shadow: 0 10px 30px -5px rgba(255, 255, 255, 0.3);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 16px 40px -4px rgba(255, 255, 255, 0.45);
+    }
+
+    .btn-secondary {
+      background: var(--surface-low);
+      color: #e0e0e0;
+      border: 1px solid var(--outline-variant);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .btn-secondary:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    .btn-magnet .inner-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+      transition: transform 0.15s ease-out;
+    }
+
+    /* ─── Floating Badges Strip (Idle Animation) ─────────────────────────────── */
+    .badge-strip {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 60px;
+    }
+    .idle-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--outline-variant);
+      padding: 8px 16px;
+      border-radius: 16px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      animation: floatBadge 6s infinite ease-in-out;
+      backdrop-filter: blur(8px);
+    }
+    .badge-1 { animation-delay: 0s; }
+    .badge-2 { animation-delay: -1.5s; }
+    .badge-3 { animation-delay: -3s; }
+    .badge-4 { animation-delay: -4.5s; }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* ─── Interactive Interactive Hanzi Canvas Simulator ─────────────────────── */
+    .demo-card {
+      background: var(--surface-low);
+      border: 1px solid var(--outline-variant);
+      border-radius: 28px;
+      padding: 36px 32px;
+      margin-bottom: 70px;
+      box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    .demo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .demo-title-group h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .demo-title-group p {
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+    }
+    .demo-tabs {
+      display: flex;
+      gap: 8px;
+      background: var(--surface-lowest);
+      padding: 4px;
+      border-radius: 16px;
+      border: 1px solid var(--outline-variant);
+    }
+    .demo-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--on-surface-variant);
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 8px 16px;
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+    .demo-tab-btn.active {
+      background: var(--surface-high);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .demo-display {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .demo-display { grid-template-columns: 1fr; }
+    }
+
+    .character-tile {
+      background: var(--surface-lowest);
+      border: 1.5px solid var(--outline-variant);
+      border-radius: 24px;
+      height: 240px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .character-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 50% 50%;
+      pointer-events: none;
+    }
+    .character-glyph {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 6.5rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1;
+      text-shadow: 0 0 25px rgba(203, 166, 247, 0.4);
+      animation: pulseGlyph 4s infinite alternate ease-in-out;
+      user-select: none;
+    }
+    @keyframes pulseGlyph {
+      0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+      100% { transform: scale(1.03); filter: drop-shadow(0 0 20px rgba(203,166,247,0.5)); }
+    }
+    .character-pinyin {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-top: 6px;
+    }
+
+    .demo-details {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .detail-pill-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .detail-pill {
+      background: var(--surface-high);
+      border: 1px solid var(--outline-variant);
+      border-radius: 12px;
+      padding: 6px 12px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #e0e0e0;
+    }
+    .detail-definition {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #e0e0e0;
+    }
+    .detail-breakdown {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .breakdown-item {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--outline-variant);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .breakdown-char {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+    .breakdown-meta {
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+    }
+
+    /* ─── Features Grid ──────────────────────────────────────────────────────── */
+    .section-heading {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--on-surface-variant);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+
+    .feature-card {
+      background: var(--surface-low);
+      border: 1px solid var(--outline-variant);
+      border-radius: 24px;
+      padding: 28px 24px;
+      transition: transform 0.3s var(--ease-spring), border-color 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .feature-icon-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: var(--surface-high);
+      border: 1px solid var(--outline-variant);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      margin-bottom: 18px;
+      transition: transform 0.3s var(--ease-spring);
+    }
+    .feature-card:hover .feature-icon-badge {
+      transform: scale(1.1) rotate(-4deg);
+      background: var(--accent-purple);
+      color: #121212;
+    }
+
+    .feature-card h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 0.94rem;
+      color: var(--on-surface-variant);
+      line-height: 1.6;
+    }
+
+    /* ─── Screenshots Showcase ───────────────────────────────────────────────── */
+    .screenshots-showcase {
+      margin-bottom: 90px;
+      text-align: center;
+    }
+    .screenshots-scroll {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding: 20px 8px 30px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+      scrollbar-color: var(--surface-high) transparent;
+    }
+    .screenshot-frame {
+      flex: 0 0 240px;
+      scroll-snap-align: center;
+      background: var(--surface-lowest);
+      border: 2px solid var(--outline-variant);
+      border-radius: 28px;
+      padding: 12px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s var(--ease-spring), border-color 0.3s;
+    }
+    .screenshot-frame:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(203, 166, 247, 0.4);
+    }
+    .screenshot-inner {
+      width: 100%;
+      height: 440px;
+      border-radius: 20px;
+      background: var(--surface-low);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--outline-variant);
+    }
+    .screenshot-caption {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #e0e0e0;
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--outline-variant);
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--on-surface-variant);
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover {
+      color: var(--accent-purple);
+    }
+
+    @media (max-width: 600px) {
+      .hero-title { font-size: 2.5rem; }
+      .page-wrapper { padding: 24px 16px 60px; }
+      .demo-card { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Ambient Glow Orbs -->
+  <div class="ambient-canvas">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+
+  <!-- Background Floating Calligraphy Glyphs -->
+  <div class="floating-glyphs">
+    <div class="floating-glyph glyph-1">鲲</div>
+    <div class="floating-glyph glyph-2">鹏</div>
+    <div class="floating-glyph glyph-3">墨</div>
+    <div class="floating-glyph glyph-4">道</div>
+  </div>
+
+  <!-- Custom Magnetic Cursor Elements -->
+  <div class="custom-cursor" id="cursorDot"></div>
+  <div class="custom-cursor-follower" id="cursorFollower"></div>
+
+  <!-- Top Announcement Bar (Configured via app_config.json) -->
+  <div class="announcement-wrapper" id="announcementWrapper">
+    <div class="announcement-bar" id="announcementBar">
+      <div class="announcement-left">
+        <span class="announcement-badge" id="announcementBadge">NEW</span>
+        <span class="announcement-star">✦</span>
+        <div class="announcement-content">
+          <span class="announcement-title" id="announcementTitle">New Update Available!</span>
+          <span id="announcementMessage">Offline stroke animations, improved radical search, and performance boosts.</span>
+        </div>
+      </div>
+      <div class="announcement-actions">
+        <a href="https://github.com/EmpyrealWhale/kunpeng/releases" class="announcement-btn btn-magnet" id="announcementAction">
+          <span class="inner-content">Download</span>
+        </a>
+        <button class="announcement-close" id="announcementClose" aria-label="Dismiss notice">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-wrapper">
+
+    <!-- ─── HERO SECTION ─────────────────────────────────────────────────────── -->
+    <section class="hero-section">
+      <div class="hero-logo-box">
+        <div class="hero-logo-halo"></div>
+        <img src="assets/kunpeng_logo.webp" alt="KunPeng Logo" class="hero-logo">
+      </div>
+
+      <div class="hero-tagline">
+        <span class="tagline-dot"></span>
+        <span>Version 0.9.1 • 100% Offline Engine</span>
+      </div>
+
+      <h1 class="hero-title">
+        KunPeng • <span>鲲鹏</span>
+      </h1>
+
+      <p class="hero-description">
+        A fast, serene, completely offline Chinese dictionary for Android. Experience instantaneous lookups, interactive calligraphy stroke animations, radical decompositions, and tactile flashcard learning.
+      </p>
+
+      <div class="hero-cta-cluster">
+        <a href="https://github.com/EmpyrealWhale/kunpeng/releases/latest" class="btn-magnet btn-primary" id="btnDownload">
+          <span class="inner-content">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download APK</span>
+          </span>
+        </a>
+
+        <a href="https://github.com/EmpyrealWhale/kunpeng" class="btn-magnet btn-secondary" id="btnGithub">
+          <span class="inner-content">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+            </svg>
+            <span>GitHub Repository</span>
+          </span>
+        </a>
+      </div>
+
+      <!-- Floating Badges Strip -->
+      <div class="badge-strip">
+        <div class="idle-badge badge-1">📖 120,000+ Words</div>
+        <div class="idle-badge badge-2">⚡ Zero Network Latency</div>
+        <div class="idle-badge badge-3">🎨 Stroke Vector Animations</div>
+        <div class="idle-badge badge-4">🛡️ 100% Private • No Tracking</div>
+      </div>
+    </section>
+
+    <!-- ─── INTERACTIVE HANZI CARD DEMO ──────────────────────────────────────── -->
+    <section class="demo-card">
+      <div class="demo-header">
+        <div class="demo-title-group">
+          <h3>Interactive Character Study</h3>
+          <p>Explore dynamic character cards, radical decompositions, and tone visualizers</p>
+        </div>
+        <div class="demo-tabs">
+          <button class="demo-tab-btn active" data-char="鲲" data-pinyin="kūn" data-def="mythical giant fish that can transform into a Peng bird" data-rad="鱼" data-strokes="16">鲲 (Kūn)</button>
+          <button class="demo-tab-btn" data-char="鹏" data-pinyin="péng" data-def="legendary giant bird of immense size; great prospect" data-rad="鸟" data-strokes="13">鹏 (Péng)</button>
+          <button class="demo-tab-btn" data-char="道" data-pinyin="dào" data-def="direction; way; path; Taoism; to speak; doctrine" data-rad="辶" data-strokes="12">道 (Dào)</button>
+        </div>
+      </div>
+
+      <div class="demo-display">
+        <div class="character-tile">
+          <div class="character-grid-lines"></div>
+          <div class="character-glyph" id="demoGlyph">鲲</div>
+          <div class="character-pinyin" id="demoPinyin">kūn</div>
+        </div>
+
+        <div class="demo-details">
+          <div class="detail-pill-row">
+            <span class="detail-pill" id="demoRadical">Radical: 鱼 (Fish)</span>
+            <span class="detail-pill" id="demoStrokes">16 Strokes</span>
+            <span class="detail-pill">HSK Advanced</span>
+            <span class="detail-pill">Tone 1 (High Level)</span>
+          </div>
+
+          <div class="detail-definition" id="demoDefinition">
+            A mythical giant fish originating in Chinese mythology (Zhuangzi), capable of metamorphosing into a massive Peng bird to soar into the heavens.
+          </div>
+
+          <div class="detail-breakdown">
+            <div class="breakdown-item">
+              <span class="breakdown-char">鱼</span>
+              <div class="breakdown-meta">
+                <div>Semantic Radical</div>
+                <div>Fish / Water Creature</div>
+              </div>
+            </div>
+            <div class="breakdown-item">
+              <span class="breakdown-char">昆</span>
+              <div class="breakdown-meta">
+                <div>Phonetic Component</div>
+                <div>Numerous / Together</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CORE FEATURES ────────────────────────────────────────────────────── -->
+    <section>
+      <div class="section-heading">
+        <h2 class="section-title">Built for Deliberate Language Mastery</h2>
+        <p class="section-subtitle">A balanced fusion of fluid Android craftsmanship and comprehensive lexicography</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-badge">📖</div>
+          <h4>100% Offline CC-CEDICT</h4>
+          <p>Over 120,000 Chinese-English lexical entries stored directly in a localized, high-speed Realm database for instantaneous search.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-badge">✍️</div>
+          <h4>Digital Ink Handwriting</h4>
+          <p>On-device neural handwriting recognition. Draw Chinese characters naturally with stroke-order tolerance and immediate glyph identification.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-badge">🎨</div>
+          <h4>Vector Stroke Animations</h4>
+          <p>Powered by open vector stroke data from Make Me a Hanzi. Step through stroke orders stroke-by-stroke with interactive writing practice.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-badge">🔍</div>
+          <h4>Radical & Component Trees</h4>
+          <p>Explore character etymology and hierarchical component breakdown trees, discovering shared radicals and visual homophones.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-badge">🎴</div>
+          <h4>Tactile Spaced Flashcards</h4>
+          <p>3D tactile review deck engine. Swipe cards smoothly or use tactile bottom controls with physics-driven spring animations.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-badge">🌗</div>
+          <h4>Zen Material Theming</h4>
+          <p>Curated monochrome Dark and Light color palettes designed for deep reading comfort, zero eye strain, and tactile immersion.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── SCREENSHOTS SHOWCASE ─────────────────────────────────────────────── -->
+    <section class="screenshots-showcase">
+      <div class="section-heading">
+        <h2 class="section-title">Experience the Zen Interface</h2>
+        <p class="section-subtitle">Crafted with Jetpack Compose for fluid 120Hz responsiveness</p>
+      </div>
+
+      <div class="screenshots-scroll">
+        <div class="screenshot-frame">
+          <div class="screenshot-inner">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <div style="margin-top: 16px; font-weight: 700; color: #ffffff;">Instant Search</div>
+            <div style="font-size: 0.8rem; color: var(--on-surface-variant); padding: 0 16px; text-align: center;">Pinyin, Hanzi & English Definitions</div>
+          </div>
+          <div class="screenshot-caption">Dictionary & Search</div>
+        </div>
+
+        <div class="screenshot-frame">
+          <div class="screenshot-inner">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+              <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+              <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+              <path d="M2 2l7.586 7.586"></path>
+              <circle cx="11" cy="11" r="2"></circle>
+            </svg>
+            <div style="margin-top: 16px; font-weight: 700; color: #ffffff;">Calligraphy Canvas</div>
+            <div style="font-size: 0.8rem; color: var(--on-surface-variant); padding: 0 16px; text-align: center;">Interactive Stroke Practice</div>
+          </div>
+          <div class="screenshot-caption">Practice Writing</div>
+        </div>
+
+        <div class="screenshot-frame">
+          <div class="screenshot-inner">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+            <div style="margin-top: 16px; font-weight: 700; color: #ffffff;">Tactile Deck</div>
+            <div style="font-size: 0.8rem; color: var(--on-surface-variant); padding: 0 16px; text-align: center;">Swipe & Tap Study Engine</div>
+          </div>
+          <div class="screenshot-caption">Flashcards Review</div>
+        </div>
+
+        <div class="screenshot-frame">
+          <div class="screenshot-inner">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <div style="margin-top: 16px; font-weight: 700; color: #ffffff;">Word Lists</div>
+            <div style="font-size: 0.8rem; color: var(--on-surface-variant); padding: 0 16px; text-align: center;">HSK, Bookmarks & Custom Collections</div>
+          </div>
+          <div class="screenshot-caption">Word Lists</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
+    <footer>
+      <p style="margin-bottom: 8px;">Copyright © 2026 <strong>EmpyrealWhale</strong>. All rights reserved.</p>
+      <p>Android 8.0+ required. Built upon CC-CEDICT and Make Me a Hanzi datasets.</p>
+      <p style="margin-top: 14px;">
+        <a href="https://github.com/EmpyrealWhale/kunpeng/releases">Releases</a> • 
+        <a href="https://github.com/EmpyrealWhale/kunpeng/issues">Issues</a> • 
+        <a href="https://github.com/EmpyrealWhale/kunpeng">GitHub</a>
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- ─── JAVASCRIPT: Cursor, Magnet, Announcement & Interactive Demo ────────── -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. DYNAMIC ANNOUNCEMENT BAR (From app_config.json)
+      const fetchAnnouncement = async () => {
+        try {
+          const res = await fetch('app_config.json');
+          if (!res.ok) throw new Error('Network error');
+          const data = await res.json();
+          if (data && data.notice) {
+            applyAnnouncement(data.notice);
+          }
+        } catch (e) {
+          // Graceful fallback from embedded config
+          applyAnnouncement({
+            title: "New Update Available (v0.9.1)!",
+            message: "We have added offline stroke animations, improved radical search, and fixed memory issues.",
+            actionLabel: "Download",
+            actionUrl: "https://github.com/EmpyrealWhale/kunpeng/releases",
+            style: {
+              badgeText: "NEW",
+              backgroundColor: "#1E1E2E",
+              borderColor: "#CBA6F7",
+              badgeColor: "#F38BA8",
+              actionButtonColor: "#CBA6F7",
+              actionTextColor: "#11111B"
+            }
+          });
+        }
+      };
+
+      const applyAnnouncement = (notice) => {
+        if (!notice) return;
+        const bar = document.getElementById('announcementBar');
+        const badge = document.getElementById('announcementBadge');
+        const title = document.getElementById('announcementTitle');
+        const msg = document.getElementById('announcementMessage');
+        const btn = document.getElementById('announcementAction');
+
+        if (title) title.textContent = notice.title || "Update Notice";
+        if (msg) msg.textContent = notice.message || "";
+        if (btn) {
+          btn.querySelector('.inner-content').textContent = notice.actionLabel || "Download";
+          btn.href = notice.actionUrl || "https://github.com/EmpyrealWhale/kunpeng/releases";
+        }
+        if (badge && notice.style && notice.style.badgeText) {
+          badge.textContent = notice.style.badgeText;
+        }
+
+        // Apply custom colors if specified in app_config.json
+        if (notice.style) {
+          if (notice.style.backgroundColor && bar) bar.style.backgroundColor = notice.style.backgroundColor;
+          if (notice.style.borderColor && bar) bar.style.borderColor = notice.style.borderColor;
+          if (notice.style.badgeColor && badge) badge.style.backgroundColor = notice.style.badgeColor;
+          if (notice.style.actionButtonColor && btn) btn.style.backgroundColor = notice.style.actionButtonColor;
+          if (notice.style.actionTextColor && btn) btn.style.color = notice.style.actionTextColor;
+        }
+      };
+
+      fetchAnnouncement();
+
+      const closeBtn = document.getElementById('announcementClose');
+      const wrapper = document.getElementById('announcementWrapper');
+      if (closeBtn && wrapper) {
+        closeBtn.addEventListener('click', () => {
+          wrapper.classList.add('hidden');
+        });
+      }
+
+      // 2. CUSTOM MAGNETIC CURSOR
+      const cursorDot = document.getElementById('cursorDot');
+      const cursorFollower = document.getElementById('cursorFollower');
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let followerX = mouseX;
+      let followerY = mouseY;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (cursorDot) {
+          cursorDot.style.left = `${mouseX}px`;
+          cursorDot.style.top = `${mouseY}px`;
+        }
+      });
+
+      const updateFollower = () => {
+        followerX += (mouseX - followerX) * 0.16;
+        followerY += (mouseY - followerY) * 0.16;
+        if (cursorFollower) {
+          cursorFollower.style.left = `${followerX}px`;
+          cursorFollower.style.top = `${followerY}px`;
+        }
+        requestAnimationFrame(updateFollower);
+      };
+      requestAnimationFrame(updateFollower);
+
+      const interactiveElements = document.querySelectorAll('a, button, .demo-tab-btn, .feature-card, .screenshot-frame');
+      interactiveElements.forEach((el) => {
+        el.addEventListener('mouseenter', () => {
+          cursorDot?.classList.add('active');
+          cursorFollower?.classList.add('active');
+        });
+        el.addEventListener('mouseleave', () => {
+          cursorDot?.classList.remove('active');
+          cursorFollower?.classList.remove('active');
+        });
+      });
+
+      // 3. BUTTON MAGNET EFFECT (Tactile Physics Attraction)
+      const magneticButtons = document.querySelectorAll('.btn-magnet');
+      magneticButtons.forEach((btn) => {
+        const innerContent = btn.querySelector('.inner-content');
+        
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const btnCenterX = rect.left + rect.width / 2;
+          const btnCenterY = rect.top + rect.height / 2;
+
+          const distanceX = e.clientX - btnCenterX;
+          const distanceY = e.clientY - btnCenterY;
+
+          // Magnetic attraction factor
+          const pullStrength = 0.32;
+          const innerPullStrength = 0.45;
+
+          btn.style.transform = `translate(${distanceX * pullStrength}px, ${distanceY * pullStrength}px)`;
+          if (innerContent) {
+            innerContent.style.transform = `translate(${distanceX * innerPullStrength}px, ${distanceY * innerPullStrength}px)`;
+          }
+        });
+
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = 'translate(0px, 0px)';
+          if (innerContent) {
+            innerContent.style.transform = 'translate(0px, 0px)';
+          }
+        });
+      });
+
+      // 4. INTERACTIVE DEMO TAB SWITCHER
+      const demoTabs = document.querySelectorAll('.demo-tab-btn');
+      const demoGlyph = document.getElementById('demoGlyph');
+      const demoPinyin = document.getElementById('demoPinyin');
+      const demoDefinition = document.getElementById('demoDefinition');
+      const demoRadical = document.getElementById('demoRadical');
+      const demoStrokes = document.getElementById('demoStrokes');
+
+      const definitionsData = {
+        '鲲': {
+          def: "A mythical giant fish originating in Chinese mythology (Zhuangzi), capable of metamorphosing into a massive Peng bird to soar into the heavens.",
+          rad: "Radical: 鱼 (Fish)",
+          strokes: "16 Strokes"
+        },
+        '鹏': {
+          def: "Legendary colossal bird said to be transformed from the Kun fish, with wings spanning thousands of miles. Symbol of grand ambition and great prospects.",
+          rad: "Radical: 鸟 (Bird)",
+          strokes: "13 Strokes"
+        },
+        '道': {
+          def: "The fundamental path, way, or principle of the cosmos in Daoism; doctrine; method; to speak or express in classical vernacular.",
+          rad: "Radical: 辶 (Walk / Movement)",
+          strokes: "12 Strokes"
+        }
+      };
+
+      demoTabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          demoTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          const char = tab.getAttribute('data-char');
+          const pinyin = tab.getAttribute('data-pinyin');
+
+          if (demoGlyph) demoGlyph.textContent = char;
+          if (demoPinyin) demoPinyin.textContent = pinyin;
+
+          const data = definitionsData[char];
+          if (data) {
+            if (demoDefinition) demoDefinition.textContent = data.def;
+            if (demoRadical) demoRadical.textContent = data.rad;
+            if (demoStrokes) demoStrokes.textContent = data.strokes;
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
