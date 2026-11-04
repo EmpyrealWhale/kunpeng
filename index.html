@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#121212">
+  <meta name="description" content="KunPeng is a free Chinese–English dictionary for Android with offline search, stroke animations, handwriting recognition, tone indicators, word lists, and flashcards.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="KunPeng · Chinese–English Dictionary">
+  <meta property="og:description" content="Free Chinese–English dictionary with offline search, stroke animations, handwriting practice, and flashcards.">
+  <meta property="og:url" content="https://empyrealwhale.github.io/kunpeng/">
+  <meta property="og:image" content="https://empyrealwhale.github.io/kunpeng/assets/kunpeng_logo.webp">
+  <title>KunPeng 鲲鹏 — Chinese–English Dictionary</title>
+  <link rel="icon" type="image/webp" href="assets/kunpeng_logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css">
+  <style>
+    :root {
+      color-scheme:dark;
+      --bg:#121212; --deep:#0a0a0a; --surface:#1b1b1b; --surface-hi:#242424;
+      --ink:#f0f0f0; --muted:#a7a7a7; --subtle:#777;
+      --primary:#fff; --on-primary:#121212; --line:rgba(255,255,255,.105);
+      --line-soft:rgba(255,255,255,.065); --glow:rgba(255,255,255,.06);
+      --shadow:rgba(0,0,0,.32);
+      --screen-shell:#171717;--screen-edge:rgba(255,255,255,.18);--screen-inner:#202020;
+      --blue:#1e88e5; --green:#43a047; --orange:#fb8c00; --pink:#d81b60;
+      --ease:cubic-bezier(.22,.75,.23,1);
+    }
+    html[data-theme="light"] {
+      color-scheme:light;--bg:#fff;--deep:#f7f7f7;--surface:#f7f7f7;--surface-hi:#ededed;
+      --ink:#161616;--muted:#606060;--subtle:#858585;
+      --primary:#111;--on-primary:#fff;--line:rgba(0,0,0,.11);
+      --line-soft:rgba(0,0,0,.06);--glow:rgba(0,0,0,.035);--shadow:rgba(0,0,0,.13);
+      --screen-shell:#e5e5e5;--screen-edge:rgba(0,0,0,.16);--screen-inner:#f7f7f7;
+    }
+    *,:before,:after {box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html{scroll-behavior:smooth;scroll-padding-top:100px}
+    body{margin:0;background:var(--bg);color:var(--ink);font:500 15px/1.7 "Quicksand",system-ui,sans-serif;letter-spacing:-.018em;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .28s,color .28s;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+    button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+    a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
+    img{display:block;max-width:100%;-webkit-user-drag:none;user-drag:none;pointer-events:none}i.ph{display:inline-flex;align-items:center;justify-content:center;line-height:1;flex:none}
+    ::selection{background:var(--primary);color:var(--on-primary)}
+    .wrap{width:min(1180px,calc(100% - 72px));margin:auto}
+    .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+    .eyebrow{display:inline-flex;align-items:center;gap:12px;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.13em}
+    .eyebrow:before{content:"";width:21px;height:1px;background:var(--primary);opacity:.65}
+    .section-heading h2{font-size:clamp(32px,4.4vw,55px);line-height:1.14;letter-spacing:-.06em;margin:17px 0 12px;font-weight:700}
+    .section-heading p{font-size:15px;color:var(--muted);margin:0;max-width:550px;line-height:1.85}
+    .btn{min-height:53px;display:inline-flex;align-items:center;justify-content:center;gap:11px;padding:0 23px;border:1px solid transparent;border-radius:13px;font-size:13px;font-weight:700;transition:transform .24s var(--ease),border-color .24s,background .24s,box-shadow .24s;white-space:nowrap}
+    .btn:hover{transform:translateY(-3px)}.btn i{font-size:19px}
+    .btn-main{background:var(--primary);color:var(--on-primary);box-shadow:0 10px 25px var(--shadow)}.btn-main:hover{box-shadow:0 16px 35px var(--shadow)}
+    .btn-alt{background:var(--glow);color:var(--ink);border-color:var(--line)}.btn-alt:hover{border-color:var(--muted);background:var(--surface-hi)}
+    .site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line-soft);background:color-mix(in srgb,var(--bg) 87%,transparent);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+    .nav{display:flex;align-items:center;justify-content:space-between;min-height:77px;gap:25px}
+    .brand{display:inline-flex;align-items:center;gap:11px;flex:none}.brand img{width:39px;height:39px;border-radius:50%;border:1px solid var(--line)}
+    .brand-text{display:flex;flex-direction:column;line-height:1.2}.brand-text b{font-size:17px;letter-spacing:-.055em}.brand-text small{font-size:10px;letter-spacing:.15em;color:var(--muted)}
+    .nav-links{margin-left:auto;display:flex;align-items:center;gap:32px}.nav-links a{font-size:12px;color:var(--muted);font-weight:700;transition:color .2s}.nav-links a:hover{color:var(--ink)}
+    .nav-actions{display:flex;align-items:center;gap:11px}.icon-btn{width:41px;height:41px;display:grid;place-items:center;background:transparent;border:1px solid var(--line);border-radius:12px;color:var(--ink);transition:background .2s,border-color .2s}.icon-btn:hover{background:var(--surface-hi);border-color:var(--muted)}.icon-btn i{font-size:19px}.nav-download{min-height:41px;font-size:12px;padding-inline:17px;border-radius:11px}.nav-download i{font-size:17px}.menu-btn{display:none}
+    .notice{background:var(--surface);border-bottom:1px solid var(--line-soft)}.notice[hidden]{display:none}
+    .notice-inner{min-height:43px;padding:8px 34px 8px 0;display:flex;align-items:center;justify-content:center;gap:12px;position:relative;font-size:11px}
+    .notice-badge{font-size:10px;font-weight:700;letter-spacing:.09em;white-space:nowrap}.notice-badge i{font-size:15px;margin-right:5px;vertical-align:middle}
+    .notice-title{font-weight:700}.notice-message{color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+    .notice-link{font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+    .notice-dismiss{position:absolute;right:0;top:50%;transform:translateY(-50%);height:27px;width:27px;border:0;background:transparent;color:var(--muted);border-radius:7px;display:grid;place-items:center}.notice-dismiss:hover{background:var(--glow)}
+    /* Ambient decoration moves; headings, body copy and screenshots stay still. */
+    .hero{position:relative;isolation:isolate;overflow:hidden;border-bottom:1px solid var(--line-soft)}
+    .ambient{position:absolute;pointer-events:none;inset:0;overflow:hidden;z-index:-1}
+    .ambient:before{content:"";position:absolute;right:-12%;top:0;width:780px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 65%);animation:ambient-pulse 18s ease-in-out infinite alternate}
+    .orbit{position:absolute;width:590px;height:590px;left:55%;top:2%;border:1px solid var(--line-soft);border-radius:50%;animation:orbit-breathe 15s ease-in-out infinite alternate;opacity:.7}
+    .orbit:before,.orbit:after{content:"";position:absolute;border:1px solid var(--line-soft);border-radius:50%}.orbit:before{inset:64px}.orbit:after{inset:139px}
+    .orbit-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--primary);opacity:.4;box-shadow:0 0 24px 5px var(--glow);animation:dot-pulse 5s ease-in-out infinite}
+    .dot-a{top:12%;right:18%}.dot-b{bottom:17%;right:41%;animation-delay:-2.5s}.dot-c{bottom:12%;right:7%;animation-delay:-1.4s}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;align-items:center;min-height:480px;padding-block:65px 75px}
+    .hero-copy{position:relative;z-index:3;max-width:600px}
+    .hero-kicker{color:var(--muted);font-size:12px;font-weight:700;display:inline-flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:40px;padding:7px 13px;background:var(--glow)}
+    .hero-kicker:before{content:"";height:7px;width:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px color-mix(in srgb,var(--green) 16%,transparent)}
+    .hero h1{font-size:clamp(51px,5.65vw,79px);line-height:1.12;letter-spacing:-.073em;margin:27px 0 21px;font-weight:700}
+    .hero h1 span{color:var(--muted)}.hero-intro{max-width:510px;margin:0;color:var(--muted);font-size:16px;line-height:1.9}
+    .hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:33px}
+    /* Compact outlined chips, matching the rounded treatment used throughout the app. */
+    .hero-facts{display:flex;gap:9px;flex-wrap:wrap;margin-top:27px}
+    .hero-chip{display:inline-flex;align-items:center;gap:8px;min-height:37px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:12px;font-weight:700;line-height:1.25;white-space:nowrap}
+    .hero-chip i{font-size:16px;color:var(--muted)}
+    
+    .quick-facts{background:var(--deep);border-bottom:1px solid var(--line-soft)}
+    .quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-block:27px}
+    .quick-fact{min-width:0;display:flex;align-items:center;gap:14px;padding:17px 16px;min-height:95px;border:1px solid var(--line-soft);border-radius:18px;background:var(--surface)}
+    .quick-fact-icon{width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:14px;background:var(--surface-hi);border:1px solid var(--line-soft)}
+    .quick-fact-icon i{font-size:22px;color:var(--ink)}
+    .quick-fact-copy{min-width:0;display:flex;flex-direction:column;gap:3px}
+    .quick-fact strong{display:block;font-size:13px;line-height:1.4;font-weight:700;letter-spacing:-.025em}
+    .quick-fact small{display:block;font-size:11px;line-height:1.5;color:var(--muted);font-weight:500}
+    .section{padding:115px 0}
+    .features-heading{margin-bottom:41px}.features-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .feature{position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:204px;padding:24px;border:1px solid var(--line);border-radius:22px;background:var(--surface);transition:transform .32s var(--ease),border-color .32s,background .32s}
+    .feature:hover{transform:translateY(-5px);border-color:var(--muted);background:var(--surface-hi)}
+    .feature:after{content:"";pointer-events:none;position:absolute;right:-110px;top:-100px;width:200px;height:200px;border-radius:50%;border:1px solid var(--line-soft);transition:transform .5s}
+    .feature:hover:after{transform:scale(1.4)}
+    .feature.large{grid-column:span 2;min-height:270px}
+    .feature-icon{display:grid;place-items:center;flex:none;width:44px;height:44px;background:var(--glow);border:1px solid var(--line);border-radius:14px;margin-bottom:22px}
+    .feature-icon i{font-size:22px}.feature h3{font-size:16px;line-height:1.4;letter-spacing:-.045em;font-weight:700;margin:auto 0 8px}.feature.large h3{font-size:25px;line-height:1.25}
+    .feature p{font-size:13px;line-height:1.75;color:var(--muted);margin:0;max-width:395px}
+    .feature-words{position:absolute;right:28px;top:24px;display:flex;gap:5px;transform:rotate(-9deg)}
+    .feature-words span{width:64px;height:78px;display:grid;place-items:center;font:500 40px/1 'Noto Sans SC',sans-serif;color:var(--ink);border-radius:15px;background:var(--surface-hi);border:1px solid var(--line);box-shadow:0 9px 28px var(--shadow)}
+    .feature-words span:last-child{transform:rotate(15deg) translateY(-6px)}
+    .tones-feature{background:linear-gradient(125deg,var(--surface),var(--surface-hi));isolation:isolate}.tones-feature .feature-icon{margin-bottom:24px}
+    .tone-glyphs{display:flex;align-items:center;gap:clamp(8px,1.5vw,22px);position:absolute;right:27px;top:28px;pointer-events:none}
+    .tone-glyph{font:700 35px/1.2 'Noto Sans SC',system-ui,sans-serif;letter-spacing:0;display:grid;place-items:center;width:35px;height:41px}
+    .tone-glyph:nth-child(1){color:var(--blue)}.tone-glyph:nth-child(2){color:var(--green)}.tone-glyph:nth-child(3){color:var(--orange)}.tone-glyph:nth-child(4){color:var(--pink)}.tone-glyph:nth-child(5){color:var(--muted)}
+    .tone-glyph:nth-child(3){font-size:39px}
+    /* Study sequence is intentionally static. Decorative rails are the only moving parts. */
+    .journey{background:var(--deep);border-block:1px solid var(--line-soft);position:relative;overflow:hidden}
+    .journey:before{content:"";position:absolute;right:-300px;bottom:-430px;width:850px;height:850px;border-radius:50%;border:1px solid var(--line-soft);pointer-events:none}
+    .journey-top{display:flex;justify-content:space-between;align-items:end;gap:50px;margin-bottom:44px}.journey-top .section-heading{max-width:730px}
+    .journey-mark{font:500 60px/1 'Noto Sans SC',sans-serif;color:var(--muted);opacity:.3}
+    .journey-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;position:relative}
+    .journey-card{position:relative;padding:30px 27px 28px;border:1px solid var(--line);background:var(--surface);border-radius:23px;min-height:243px;display:flex;flex-direction:column;overflow:hidden}
+    .journey-card .top{display:flex;align-items:center;justify-content:space-between;gap:12px}.journey-card .num{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em}.journey-card .top i{font-size:25px}
+    .journey-card h3{font-size:23px;letter-spacing:-.05em;line-height:1.3;margin:auto 0 9px}.journey-card p{font-size:13px;color:var(--muted);line-height:1.78;margin:0}
+    .journey-card:before{content:"";position:absolute;top:0;left:0;width:0;height:2px;background:var(--primary);transition:width .7s var(--ease)}.journey-card:hover:before{width:100%}
+    .journey-arrow{position:absolute;right:-21px;top:50%;transform:translateY(-50%);z-index:2;width:42px;height:42px;display:grid;place-items:center;color:var(--ink);border:1px solid var(--line);border-radius:50%;background:var(--surface-hi);box-shadow:0 5px 22px var(--shadow)}.journey-arrow i{font-size:17px}
+    .bottom-area{padding:108px 0 84px}
+    .download-panel{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:29px;padding:57px 6%;display:flex;align-items:center;justify-content:space-between;gap:30px}
+    .download-panel:after{content:"鲲鹏";position:absolute;right:19%;top:-42px;font:700 170px/1.4 'Noto Sans SC',sans-serif;color:var(--glow);pointer-events:none;transform:rotate(-11deg)}
+    .download-panel>*{position:relative;z-index:1}.download-panel h2{font-size:clamp(31px,4vw,45px);letter-spacing:-.065em;line-height:1.25;margin:13px 0 9px}.download-panel p{font-size:14px;color:var(--muted);margin:0}.download-panel .btn{flex:none}
+    .faq-layout{display:grid;grid-template-columns:minmax(225px,.68fr) minmax(0,1.32fr);gap:90px;padding-top:108px;align-items:start}
+    .faq-intro h2{font-size:clamp(30px,3.5vw,43px);line-height:1.2;letter-spacing:-.058em;margin:17px 0 14px}.faq-intro p{color:var(--muted);font-size:13px;line-height:1.8;max-width:300px;margin:0}
+    .faq-list{display:grid;gap:10px}
+    .faq-item{border:1px solid var(--line);background:var(--surface);border-radius:16px;overflow:hidden;transition:border-color .2s,background .2s}
+    .faq-item[open]{border-color:color-mix(in srgb,var(--muted) 65%,transparent);background:var(--surface-hi)}
+    .faq-item summary{list-style:none;cursor:pointer;padding:22px 20px;display:grid;grid-template-columns:25px minmax(0,1fr) 30px;align-items:center;gap:12px;font-size:14px;font-weight:700;line-height:1.55}
+    .faq-item summary::-webkit-details-marker{display:none}
+    .faq-index{font-size:11px;font-weight:700;color:var(--muted)}
+    .faq-toggle{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:var(--glow);border:1px solid var(--line);transition:transform .25s,background .25s}.faq-toggle i{font-size:16px}
+    .faq-item[open] .faq-toggle{transform:rotate(45deg);background:var(--line)}
+    .faq-item p{font-size:13px;line-height:1.85;color:var(--muted);margin:0;padding:0 60px 22px 57px}.faq-item p a{text-decoration:underline;text-underline-offset:3px;color:var(--ink)}
+    .footer{position:relative;overflow:hidden;border-top:1px solid var(--line-soft);background:var(--deep);padding:65px 0 0}
+    .footer:before{content:"";position:absolute;right:-170px;bottom:-300px;width:560px;aspect-ratio:1;border:1px solid var(--line-soft);border-radius:50%;pointer-events:none}
+    .footer-top{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,.7fr) minmax(0,.7fr);gap:clamp(32px,6vw,90px);padding-bottom:63px}
+    .footer-brand .brand img{width:47px;height:47px}.footer-brand .brand-text b{font-size:19px}.footer-brand .brand-text small{font-size:11px}
+    .footer-description{max-width:325px;margin:21px 0 19px;color:var(--muted);font-size:13px;line-height:1.85}
+    .footer-email{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--surface);padding:12px 16px;border-radius:12px;font-size:12px;font-weight:700;transition:background .2s,border-color .2s}
+    .footer-email:hover{border-color:var(--muted);background:var(--surface-hi)}.footer-email i{font-size:18px}
+    .footer-col h3{margin:3px 0 21px;font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.11em}
+    .footer-col nav{display:flex;flex-direction:column;align-items:flex-start;gap:13px}
+    .footer-col a{font-size:13px;font-weight:600;color:var(--ink);transition:color .2s}.footer-col a:hover{color:var(--muted)}
+    .footer-bottom{border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:17px;padding:22px 0 27px;font-size:11px;color:var(--muted)}
+    .footer-bottom p{margin:0}.footer-credits{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.footer-credits a{text-decoration:none;color:var(--muted);border-bottom:1px solid var(--line);transition:color .2s}.footer-credits a:hover{color:var(--ink)}
+    .back-top{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--ink)}.back-top i{font-size:17px}
+    /* Decorative cursor; never intercepts input. */
+    .custom-cursor{pointer-events:none;position:fixed;left:0;top:0;width:35px;height:35px;border:1px solid rgba(255,255,255,.65);border-radius:50%;z-index:99;opacity:0;transform:translate3d(-100px,-100px,0);transition:width .23s,height .23s,opacity .17s,background .2s;mix-blend-mode:difference;will-change:transform}
+    .custom-cursor:after{content:"";position:absolute;width:4px;height:4px;left:50%;top:50%;transform:translate(-50%,-50%);background:white;border-radius:50%;transition:opacity .2s}
+    .custom-cursor.active{width:56px;height:56px;background:rgba(255,255,255,.1)}.custom-cursor.active:after{opacity:0}
+    @media(hover:hover) and (pointer:fine){body.cursor-enabled,body.cursor-enabled a,body.cursor-enabled button,body.cursor-enabled summary{cursor:none}}
+    @keyframes ambient-pulse{from{opacity:.4;transform:scale(.88)}to{opacity:1;transform:scale(1.1)}}
+    @keyframes orbit-breathe{from{transform:translate(0,0)}to{transform:translate(-40px,30px)}}
+    @keyframes dot-pulse{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:.62;transform:scale(1.45)}}
+    @media(max-width:1100px){.hero-grid{gap:20px}.screens-stage{height:445px}.screen-card{width:40%}.quick-fact{padding:13px 11px;gap:10px}.quick-fact-icon{width:38px;height:38px}.quick-fact strong{font-size:12px}.features-grid{gap:12px}.feature{padding:21px}.tone-glyphs{right:20px;gap:7px}.faq-layout{gap:45px}}
+    @media(max-width:850px){
+      .wrap{width:min(100% - 42px,680px)}.nav{min-height:68px}
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:19px;background:var(--bg);padding:23px;box-shadow:0 18px 30px var(--shadow);border-bottom:1px solid var(--line)}
+      .nav-links.open{display:flex}.nav-links a{font-size:15px}.nav-download{display:none}.menu-btn{display:grid}
+      .hero-grid{min-height:0;grid-template-columns:1fr;gap:30px;padding:69px 0 55px}.hero h1{font-size:clamp(54px,8vw,75px)}.hero-copy{max-width:650px}
+      .screens-stage{height:415px;max-width:510px}.screen-card{width:182px}
+      .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-block:20px}.quick-fact{min-height:83px;padding:13px 16px}.quick-fact strong{font-size:13px}.footer-top{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:35px}.footer-brand{grid-column:span 2}.footer-description{max-width:440px}
+      .section{padding:86px 0}.features-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.feature.large{grid-column:span 2}.feature{min-height:206px}.journey-grid{gap:10px}.journey-card{padding:25px 19px}.journey-arrow{right:-19px;width:34px;height:34px}.faq-layout{grid-template-columns:1fr;gap:33px;padding-top:84px}.faq-intro p{max-width:520px}
+    }
+    @media(max-width:550px){
+      .wrap{width:calc(100% - 34px)}.brand img{width:35px;height:35px}.nav-actions{gap:8px}
+      .notice-inner{justify-content:flex-start}.notice-message{display:none}.hero-grid{padding-top:56px;gap:20px}.hero h1{font-size:clamp(45px,12.3vw,61px);margin-top:22px}.hero-intro{font-size:15px}.hero-actions{gap:10px}.hero-actions .btn{width:100%}.hero-facts{gap:8px}.hero-chip{font-size:11px;padding:7px 12px;min-height:34px}
+      .screens-stage{height:330px;max-width:385px;margin-top:7px}.screen-card{width:min(40%,148px);padding:4px;border-radius:22px}.card-inside{border-radius:18px}.shot-placeholder svg{width:35px;height:35px}
+      .screen-card:nth-child(1){transform:translate(-82%,-46%) rotate(-12deg)}.screen-card:nth-child(3){transform:translate(-18%,-46%) rotate(12deg)}
+      .quick-grid{gap:9px}.quick-fact{min-height:87px;padding:12px;gap:10px;border-radius:15px}.quick-fact-icon{height:35px;width:35px;border-radius:11px}.quick-fact-icon i{font-size:18px}.quick-fact strong{font-size:11px}.quick-fact small{font-size:10px}
+      .section{padding:76px 0}.section-heading h2{font-size:37px}.section-heading p{font-size:14px}.features-heading{margin-bottom:30px}
+      .features-grid{grid-template-columns:1fr;gap:11px}.feature,.feature.large{grid-column:span 1;min-height:180px;padding:23px}.feature.large{min-height:242px}.feature.large h3{font-size:22px}.feature-icon{margin-bottom:18px}
+      .tone-glyphs{top:24px;right:16px;gap:4px}.tone-glyph{font-size:27px;width:25px}.tone-glyph:nth-child(3){font-size:30px}
+      .journey-top{margin-bottom:30px}.journey-mark{display:none}.journey-grid{grid-template-columns:1fr;gap:13px}.journey-card{min-height:193px;padding:24px}.journey-card h3{font-size:22px}.journey-arrow{display:none}
+      .bottom-area{padding:75px 0}.download-panel{padding:33px 24px;flex-direction:column;align-items:flex-start}.download-panel .btn{width:100%}.download-panel:after{right:-30px;font-size:100px;top:35px}.faq-layout{padding-top:79px}.faq-item summary{padding:19px 14px;gap:9px;grid-template-columns:19px 1fr 28px;font-size:13px}.faq-item p{padding:0 24px 20px 42px}.footer{padding-top:48px}.footer-top{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 18px;padding-bottom:42px}.footer-brand{grid-column:span 2}.footer-col h3{margin-bottom:17px}.footer-bottom{align-items:flex-start;flex-direction:column;gap:14px}.footer-credits{gap:7px}
+    }
+    @media(pointer:coarse),(prefers-reduced-motion:reduce){.custom-cursor{display:none!important}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="custom-cursor" id="customCursor" aria-hidden="true"></div>
+  <a class="sr-only" href="#main">Skip to content</a>
+
+  <div class="notice" id="noticeBar" hidden aria-label="KunPeng announcement">
+    <div class="wrap notice-inner">
+      <span class="notice-badge"><i id="noticeIcon" class="ph ph-confetti" aria-hidden="true"></i><span id="noticeBadge">BETA</span></span>
+      <span class="notice-title" id="noticeTitle">KunPeng beta launched</span>
+      <span class="notice-message" id="noticeMessage">Feedback is welcome.</span>
+      <a class="notice-link" id="noticeAction" href="https://github.com/EmpyrealWhale/kunpeng/releases/latest">Download beta</a>
+      <button class="notice-dismiss" type="button" id="noticeDismiss" aria-label="Dismiss announcement"><i class="ph ph-x" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <nav class="wrap nav" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="KunPeng home"><img src="assets/kunpeng_logo.webp" alt="" width="39" height="39"><span class="brand-text"><b>KunPeng</b><small>鲲鹏</small></span></a>
+      <div class="nav-links" id="navLinks"><a href="#features">Features</a><a href="#workflow">How it works</a><a href="#faq">FAQ</a><a href="#feedback">Feedback</a></div>
+      <div class="nav-actions">
+        <button class="icon-btn" type="button" id="themeToggle" title="Change theme" aria-label="Switch to light theme"><i class="ph ph-sun" aria-hidden="true"></i></button>
+        <a class="btn btn-main nav-download" href="https://github.com/EmpyrealWhale/kunpeng/releases/latest" target="_blank" rel="noopener noreferrer"><i class="ph ph-download-simple" aria-hidden="true"></i> Download</a>
+        <button class="icon-btn menu-btn" type="button" id="menuToggle" aria-label="Open menu" aria-controls="navLinks" aria-expanded="false"><i class="ph ph-list" aria-hidden="true"></i></button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="heroTitle">
+      <div class="ambient" aria-hidden="true"><span class="orbit"></span><span class="orbit-dot dot-a"></span><span class="orbit-dot dot-b"></span><span class="orbit-dot dot-c"></span></div>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="hero-kicker">Chinese–English dictionary · Beta</span>
+          <h1 id="heroTitle">Chinese dictionary.<br><span>Study tools.</span></h1>
+          <p class="hero-intro">An offline dictionary with handwriting search, stroke animations, character breakdowns, word lists, and flashcards. Free for Android.</p>
+          <div class="hero-actions"><a class="btn btn-main" href="https://github.com/EmpyrealWhale/kunpeng/releases/latest" target="_blank" rel="noopener noreferrer"><i class="ph ph-download-simple" aria-hidden="true"></i> Download for Android</a><a class="btn btn-alt" href="#features">View features <i class="ph ph-arrow-down-right" aria-hidden="true"></i></a></div>
+          <div class="hero-facts" aria-label="App highlights"><span class="hero-chip"><i class="ph ph-check-circle" aria-hidden="true"></i> Free</span><span class="hero-chip"><i class="ph ph-wifi-slash" aria-hidden="true"></i> Offline dictionary</span><span class="hero-chip"><i class="ph ph-stack" aria-hidden="true"></i> Flashcards</span></div>
+        </div>
+        
+      </div>
+    </section>
+
+    <div class="quick-facts" aria-label="App highlights"><div class="wrap quick-grid">
+      <div class="quick-fact"><span class="quick-fact-icon"><i class="ph ph-translate" aria-hidden="true"></i></span><span class="quick-fact-copy"><strong>Chinese &amp; English</strong><small>Dictionary search</small></span></div>
+      <div class="quick-fact"><span class="quick-fact-icon"><i class="ph ph-scribble-loop" aria-hidden="true"></i></span><span class="quick-fact-copy"><strong>Handwriting search</strong><small>Draw to look up</small></span></div>
+      <div class="quick-fact"><span class="quick-fact-icon"><i class="ph ph-play-circle" aria-hidden="true"></i></span><span class="quick-fact-copy"><strong>Stroke animations</strong><small>Follow stroke order</small></span></div>
+      <div class="quick-fact"><span class="quick-fact-icon"><i class="ph ph-stack" aria-hidden="true"></i></span><span class="quick-fact-copy"><strong>Flashcards</strong><small>Review vocabulary</small></span></div>
+    </div></div>
+
+    <section class="section" id="features" aria-labelledby="featuresTitle"><div class="wrap">
+      <div class="section-heading features-heading"><span class="eyebrow">Features</span><h2 id="featuresTitle">Dictionary and study tools</h2><p>Look up words, understand characters, practice writing, and review vocabulary.</p></div>
+      <div class="features-grid">
+        <article class="feature large"><span class="feature-icon"><i class="ph ph-magnifying-glass" aria-hidden="true"></i></span><div class="feature-words" aria-hidden="true"><span>词</span><span>字</span></div><h3>Search offline</h3><p>Search Chinese characters, pinyin, or English using the built-in dictionary.</p></article>
+        <article class="feature large"><span class="feature-icon"><i class="ph ph-play-circle" aria-hidden="true"></i></span><h3>Stroke animations</h3><p>Watch stroke order for most characters, then practice writing them yourself.</p></article>
+        <article class="feature large tones-feature"><span class="feature-icon"><i class="ph ph-waveform" aria-hidden="true"></i></span><div class="tone-glyphs" aria-label="The five tone indicators"><span class="tone-glyph" aria-label="First tone">―</span><span class="tone-glyph" aria-label="Second tone">/</span><span class="tone-glyph" aria-label="Third tone">∨</span><span class="tone-glyph" aria-label="Fourth tone">\</span><span class="tone-glyph" aria-label="Neutral tone">·</span></div><h3>Tone indicators</h3><p>See pronunciation with colored pinyin tone marks or the app’s five tone-bar symbols.</p></article>
+        <article class="feature"><span class="feature-icon"><i class="ph ph-scribble-loop" aria-hidden="true"></i></span><h3>Handwriting recognition</h3><p>Draw a character to find it in the dictionary.</p></article>
+        <article class="feature"><span class="feature-icon"><i class="ph ph-lightbulb" aria-hidden="true"></i></span><h3>Memory help</h3><p>Explore character components, similar characters, and related words.</p></article>
+        <article class="feature"><span class="feature-icon"><i class="ph ph-stack" aria-hidden="true"></i></span><h3>Flashcards</h3><p>Review saved words and revisit difficult cards.</p></article>
+        <article class="feature"><span class="feature-icon"><i class="ph ph-books" aria-hidden="true"></i></span><h3>Word lists</h3><p>Save vocabulary to custom lists and import or export your collections.</p></article>
+        <article class="feature"><span class="feature-icon"><i class="ph ph-puzzle-piece" aria-hidden="true"></i></span><h3>Radicals</h3><p>Browse Kangxi radicals and explore character structure.</p></article>
+        <article class="feature"><span class="feature-icon"><i class="ph ph-house" aria-hidden="true"></i></span><h3>Daily-word widget</h3><p>Keep a Chinese word on your home screen.</p></article>
+      </div>
+    </div></section>
+
+    <section class="section journey" id="workflow" aria-labelledby="workflowTitle"><div class="wrap">
+      <div class="journey-top"><div class="section-heading"><span class="eyebrow">How it works</span><h2 id="workflowTitle">From lookup to review</h2><p>Search a word, explore its characters, and save what you want to practice.</p></div><span class="journey-mark" lang="zh-Hans" aria-hidden="true">学习</span></div>
+      <div class="journey-grid">
+        <article class="journey-card"><div class="top"><span class="num">01 / LOOK UP</span><i class="ph ph-magnifying-glass" aria-hidden="true"></i></div><h3>Find a word</h3><p>Type Chinese, pinyin, or English. You can also search by drawing a character.</p><span class="journey-arrow" aria-hidden="true"><i class="ph ph-arrow-right"></i></span></article>
+        <article class="journey-card"><div class="top"><span class="num">02 / EXPLORE</span><i class="ph ph-puzzle-piece" aria-hidden="true"></i></div><h3>Understand it</h3><p>Read definitions, listen to pronunciation, and check character components or stroke order.</p><span class="journey-arrow" aria-hidden="true"><i class="ph ph-arrow-right"></i></span></article>
+        <article class="journey-card"><div class="top"><span class="num">03 / PRACTICE</span><i class="ph ph-stack" aria-hidden="true"></i></div><h3>Review later</h3><p>Bookmark words or add them to a list for flashcard review and writing practice.</p></article>
+      </div>
+    </div></section>
+
+    <section class="bottom-area" id="download"><div class="wrap">
+      <div class="download-panel"><div><span class="eyebrow">Download</span><h2>Get KunPeng for Android</h2><p>Available as a free APK from GitHub Releases.</p></div><a class="btn btn-main" href="https://github.com/EmpyrealWhale/kunpeng/releases/latest" target="_blank" rel="noopener noreferrer"><i class="ph ph-download-simple" aria-hidden="true"></i> Download KunPeng</a></div>
+      <div class="faq-layout" id="faq"><div class="faq-intro"><span class="eyebrow">FAQ</span><h2>Common questions</h2><p>For suggestions, corrections, or bug reports, use Send feedback below.</p></div>
+        <div class="faq-list">
+          <details class="faq-item"><summary><span class="faq-index">01</span><span>Is KunPeng free?</span><span class="faq-toggle"><i class="ph ph-plus" aria-hidden="true"></i></span></summary><p>Yes. The app is free to download and use.</p></details>
+          <details class="faq-item"><summary><span class="faq-index">02</span><span>Can I use it offline?</span><span class="faq-toggle"><i class="ph ph-plus" aria-hidden="true"></i></span></summary><p>Dictionary searches and saved vocabulary work offline. Handwriting recognition works offline after the recognition model has been downloaded once.</p></details>
+          <details class="faq-item"><summary><span class="faq-index">03</span><span>How do I review saved vocabulary?</span><span class="faq-toggle"><i class="ph ph-plus" aria-hidden="true"></i></span></summary><p>Bookmark entries or add words to lists, then use flashcards to review them.</p></details>
+          <details class="faq-item"><summary><span class="faq-index">04</span><span>Does it support traditional Chinese?</span><span class="faq-toggle"><i class="ph ph-plus" aria-hidden="true"></i></span></summary><p>Yes. You can show traditional characters in the app settings.</p></details>
+          <details class="faq-item"><summary><span class="faq-index">05</span><span>How do I install it?</span><span class="faq-toggle"><i class="ph ph-plus" aria-hidden="true"></i></span></summary><p>Download the APK from the <a href="https://github.com/EmpyrealWhale/kunpeng/releases/latest" target="_blank" rel="noopener noreferrer">latest GitHub release</a> and open it on your Android device.</p></details>
+        </div>
+      </div>
+    </div></section>
+  </main>
+
+  <footer class="footer"><div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="#top" aria-label="KunPeng home"><img src="assets/kunpeng_logo.webp" alt="" width="47" height="47"><span class="brand-text"><b>KunPeng</b><small>鲲鹏</small></span></a>
+        <p class="footer-description">Chinese–English dictionary with handwriting search, writing practice, word lists, and flashcards.</p>
+        <a class="footer-email" id="feedback" href="mailto:empyrealwhale@gmail.com?subject=Feedback%20for%20KunPeng%20Dictionary"><i class="ph ph-envelope-simple" aria-hidden="true"></i> Send feedback <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
+      </div>
+      <div class="footer-col"><h3>Explore</h3><nav aria-label="Explore"><a href="#features">Features</a><a href="#workflow">How it works</a><a href="#faq">FAQ</a><a href="#download">Download</a></nav></div>
+      <div class="footer-col"><h3>Project</h3><nav aria-label="Project"><a href="https://github.com/EmpyrealWhale/kunpeng" target="_blank" rel="noopener noreferrer">GitHub <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a><a href="https://github.com/EmpyrealWhale/kunpeng/releases/latest" target="_blank" rel="noopener noreferrer">Releases <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a><a href="https://github.com/EmpyrealWhale/kunpeng/issues" target="_blank" rel="noopener noreferrer">Report an issue <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a></nav></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 EmpyrealWhale</p><div class="footer-credits"><span>Data:</span><a href="https://cc-cedict.org/" target="_blank" rel="noopener noreferrer">CC-CEDICT</a><span aria-hidden="true">·</span><a href="https://github.com/skishore/makemeahanzi" target="_blank" rel="noopener noreferrer">Make Me a Hanzi</a></div><a class="back-top" href="#top">Back to top <i class="ph ph-arrow-up" aria-hidden="true"></i></a></div>
+  </div></footer>
+
+  <script>
+    (()=>{
+      'use strict';
+      const $=(q)=>document.querySelector(q), $$=(q)=>[...document.querySelectorAll(q)];
+      const root=document.documentElement;
+      const store={get:k=>{try{return localStorage.getItem(k)}catch{return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}}};
+      document.addEventListener('copy', e => e.preventDefault());
+      document.addEventListener('dragstart', e => e.preventDefault());
+      const themeToggle=$('#themeToggle');
+
+      function setTheme(theme){
+        const current=theme==='light'?'light':'dark';root.dataset.theme=current;
+        const i=themeToggle?.querySelector('i');if(i)i.className=current==='dark'?'ph ph-sun':'ph ph-moon';
+        themeToggle?.setAttribute('aria-label',`Switch to ${current==='dark'?'light':'dark'} theme`);
+        const meta=$('meta[name="theme-color"]');if(meta)meta.content=current==='dark'?'#121212':'#ffffff';
+
+      }
+      setTheme(store.get('kunpeng_website_theme')||'dark');
+      themeToggle?.addEventListener('click',()=>{const n=root.dataset.theme==='dark'?'light':'dark';setTheme(n);store.set('kunpeng_website_theme',n)});
+      const menu=$('#navLinks'),toggle=$('#menuToggle');
+      function closeMenu(){menu?.classList.remove('open');toggle?.setAttribute('aria-expanded','false');toggle?.setAttribute('aria-label','Open menu');const i=toggle?.querySelector('i');if(i)i.className='ph ph-list'}
+      toggle?.addEventListener('click',()=>{const open=menu.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close menu':'Open menu');toggle.querySelector('i').className=open?'ph ph-x':'ph ph-list'});
+      $$('#navLinks a').forEach(a=>a.addEventListener('click',closeMenu));document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+      window.matchMedia('(min-width: 851px)').addEventListener?.('change',closeMenu);
+      $$('.faq-item').forEach(item=>item.addEventListener('toggle',()=>{if(item.open)$$('.faq-item').forEach(other=>{if(other!==item)other.open=false})}));
+      const cursor=$('#customCursor');
+      if(cursor&&window.matchMedia('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)').matches){
+        let tx=-100,ty=-100,cx=-100,cy=-100,moving=false;
+        const tick=()=>{cx+=(tx-cx)*.25;cy+=(ty-cy)*.25;cursor.style.transform=`translate3d(${cx-cursor.offsetWidth/2}px,${cy-cursor.offsetHeight/2}px,0)`;if(Math.abs(tx-cx)+Math.abs(ty-cy)>.4)requestAnimationFrame(tick);else moving=false};
+        document.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;tx=e.clientX;ty=e.clientY;cursor.style.opacity='1';document.body.classList.add('cursor-enabled');if(!moving){moving=true;requestAnimationFrame(tick)}},{passive:true});
+        document.addEventListener('pointerover',e=>cursor.classList.toggle('active',!!e.target.closest('a,button,summary')));
+        document.addEventListener('pointerout',e=>{if(!e.relatedTarget)cursor.style.opacity='0'});window.addEventListener('blur',()=>cursor.style.opacity='0');
+      }
+      const fallbackNotice={id:'notice_beta_launch_2026_10',type:'NEWS',title:'KunPeng beta launched',message:'Feedback is welcome.',actionLabel:'Download beta',actionUrl:'https://github.com/EmpyrealWhale/kunpeng/releases/latest',dismissible:true,style:{icon:'confetti',badgeText:'BETA'}};
+      function renderNotice(notice){
+        if(!notice?.id||store.get('kunpeng_notice_dismissed_'+notice.id)==='true')return;
+        const bar=$('#noticeBar');$('#noticeTitle').textContent=notice.title||'KunPeng';$('#noticeMessage').textContent=notice.message||'';
+        $('#noticeBadge').textContent=notice.style?.badgeText||'NEWS';
+        const icons={confetti:'confetti',star:'star',heart:'heart',sparkles:'sparkle',diamonds:'diamonds-four',lightbulb:'lightbulb'};
+        $('#noticeIcon').className='ph ph-'+(icons[notice.style?.icon]||'confetti');
+        const a=$('#noticeAction');
+        try{const url=new URL(notice.actionUrl||'#features',location.href);if(['http:','https:','file:'].includes(url.protocol)){a.href=url.href;a.textContent=notice.actionLabel||'Download beta';a.hidden=false}else a.hidden=true}catch{a.hidden=true}
+        const close=$('#noticeDismiss');close.hidden=notice.dismissible===false;close.onclick=()=>{store.set('kunpeng_notice_dismissed_'+notice.id,'true');bar.hidden=true};bar.hidden=false;
+      }
+      fetch('app_config.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('No announcement');return r.json()}).then(v=>renderNotice(v.notice)).catch(()=>renderNotice(fallbackNotice));
+    })();
+  </script>
+</body>
+</html>

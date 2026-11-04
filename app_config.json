@@ -1,0 +1,19 @@
+{
+  "notice": {
+    "id": "notice_feedback_v0_9_1",
+    "type": "NEWS",
+    "title": "Enjoying KunPeng?",
+    "message": "We'd love to hear how your study is going. Feedback and suggestions are always welcome!",
+    "actionLabel": "Send feedback",
+    "actionUrl": "https://github.com/EmpyrealWhale/kunpeng/issues",
+    "minAppVersionCode": 0,
+    "dismissible": true,
+    "showNotification": true,
+    "style": {
+      "icon": "heart",
+      "iconColor": "#FFFFFF",
+      "badgeText": "FEEDBACK",
+      "badgeColor": "#BBBBBB"
+    }
+  }
+}
